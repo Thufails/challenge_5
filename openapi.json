@@ -1,0 +1,819 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "BE JS 2 Documentation API",
+        "version": "1.0.11"
+    },
+    "externalDocs": {
+        "description": "Find out more about Swagger",
+        "url": "http://swagger.io"
+    },
+    "servers": [{
+        "url": "http://localhost:5000/api/v1"
+    }],
+    "paths": {
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Menambahkan Data User",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "identity_number": {
+                                        "type": "string"
+                                    },
+                                    "identity_type": {
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Berhasil Menambahkan Data User",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Users"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Login Akun User",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Berhasil Login ke Akun User",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "token": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/authenticate": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Menampilan Profile User Login",
+                "security": [{
+                    "BearerAuth": []
+                }],
+                "parameters": [{
+                    "in": "headers",
+                    "name": "authorization",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Berhasil Menampilkan Profile User",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get all users",
+                "description": "Get a list of all users",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User list retrieved successfully",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get user details",
+                "description": "Get user details by user ID",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "type": "integer",
+                    "required": true,
+                    "description": "User ID"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "User details retrieved successfully",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/edit/{id}": {
+            "put": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Edit user information",
+                "description": "Edit user information by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                        "in": "path",
+                        "name": "id",
+                        "type": "integer",
+                        "required": true,
+                        "description": "User ID"
+                    },
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "description": "User information to update",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User information updated successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "data": {
+                                    "type": "object"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Delete a user",
+                "description": "Delete a user and their profile by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "type": "integer",
+                    "required": true,
+                    "description": "User ID"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "User deleted successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "data": {
+                                    "type": "object"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error deleting user",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "msg": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/regisAccounts": {
+            "post": {
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "Register a new bank account",
+                "description": "Create a new bank account for a user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                    "in": "body",
+                    "name": "account",
+                    "description": "Bank account information to register",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "bank_name": {
+                                "type": "string"
+                            },
+                            "bank_account_number": {
+                                "type": "string"
+                            },
+                            "balance": {
+                                "type": "integer"
+                            },
+                            "user_id": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Bank account created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "boolean"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "bank_name": {
+                                            "type": "string"
+                                        },
+                                        "bank_account_number": {
+                                            "type": "string"
+                                        },
+                                        "balance": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/accounts": {
+            "get": {
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "Get all bank accounts",
+                "description": "Get a list of all bank accounts",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "List of bank accounts retrieved successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "boolean"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "bank_name": {
+                                                "type": "string"
+                                            },
+                                            "bank_account_number": {
+                                                "type": "string"
+                                            },
+                                            "balance": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/accounts/{id}": {
+            "get": {
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "Get bank account details by ID",
+                "description": "Get details of a bank account by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "type": "integer",
+                    "required": true,
+                    "description": "Bank account ID"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Bank account details retrieved successfully",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "/editAccounts/{id}": {
+            "put": {
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "Edit bank account information",
+                "description": "Edit bank account information by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                        "in": "path",
+                        "name": "id",
+                        "type": "integer",
+                        "required": true,
+                        "description": "Bank account ID"
+                    },
+                    {
+                        "in": "body",
+                        "name": "account",
+                        "description": "Bank account information to update",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "bank_name": {
+                                    "type": "string"
+                                },
+                                "bank_account_number": {
+                                    "type": "string"
+                                },
+                                "balance": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Bank account information updated successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "data": {
+                                    "type": "object"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/delAccounts/{id}": {
+            "delete": {
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "Delete a bank account",
+                "description": "Delete a bank account by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "type": "integer",
+                    "required": true,
+                    "description": "Bank account ID"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Bank account deleted successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/createTransaction": {
+            "post": {
+                "tags": [
+                    "transactions"
+                ],
+                "summary": "Create a new transaction",
+                "description": "Create a new transaction between bank accounts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                    "in": "body",
+                    "name": "transaction",
+                    "description": "Transaction information",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "source_account_id": {
+                                "type": "integer"
+                            },
+                            "destination_account_id": {
+                                "type": "integer"
+                            },
+                            "amount": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Transaction created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "boolean"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "source_account_id": {
+                                            "type": "integer"
+                                        },
+                                        "destination_account_id": {
+                                            "type": "integer"
+                                        },
+                                        "amount": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "boolean"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/transactions": {
+            "get": {
+                "tags": [
+                    "transactions"
+                ],
+                "summary": "Get all transactions",
+                "description": "Get a list of all transactions",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of transactions retrieved successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "transaction_id": {
+                                                "type": "integer"
+                                            },
+                                            "source_account": {
+                                                "type": "integer"
+                                            },
+                                            "destination_account": {
+                                                "type": "integer"
+                                            },
+                                            "amount": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Transactions Not Found",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "boolean"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/transactions/{id}": {
+            "get": {
+                "tags": [
+                    "transactions"
+                ],
+                "summary": "Get transaction details by ID",
+                "description": "Get details of a transaction by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "type": "integer",
+                    "required": true,
+                    "description": "Transaction ID"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Transaction details retrieved successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "boolean"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "transaction_id": {
+                                            "type": "integer"
+                                        },
+                                        "source_account": {
+                                            "type": "integer"
+                                        },
+                                        "destination_account": {
+                                            "type": "integer"
+                                        },
+                                        "amount": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Transaction Not Found",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "boolean"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "profile": {
+                        "$ref": "#/components/schemas/Profile"
+                    }
+                }
+            },
+            "Profile": {
+                "type": "object",
+                "properties": {
+                    "identity_number": {
+                        "type": "string"
+                    },
+                    "identity_type": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    }
+                }
+            },
+            "BankAccount": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "bank_name": {
+                        "type": "string"
+                    },
+                    "bank_account_number": {
+                        "type": "string"
+                    },
+                    "balance": {
+                        "type": "string"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    }
+                }
+            },
+            "BankTransaction": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "source_account": {
+                        "$ref": "#/components/schemas/BankAccount"
+                    },
+                    "destination_account": {
+                        "$ref": "#/components/schemas/BankAccount"
+                    },
+                    "amount": {
+                        "type": "number"
+                    }
+                }
+            }
+        }
+    }
+}
